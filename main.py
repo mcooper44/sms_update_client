@@ -1,3 +1,5 @@
+#!/usr/bin/python3.6
+
 import yaml
 from twilio.rest import Client
 
@@ -12,6 +14,7 @@ class configuration:
         self.test_auth = None
         # number that twilio will sms from
         self.phone_number = None 
+        self.test_number = None
 
         if self.config:
             try:
@@ -24,6 +27,7 @@ class configuration:
                     self.test_secret = yfile['test_sid']
                     self.test_auth = yfile['test_token']
                     self.phone_number = yfile['phone_number']
+                    self.test_number = yfile['test_number']
             except:
                 print('failed to open config file')
 
@@ -45,7 +49,10 @@ class configuration:
 if __name__ == '__main__':
     config_file = configuration('setup.yml')
     config_file.print_creds()
-    sid, token  = config_file.return_creds(cred_type='test')
+    sid, token  = config_file.return_creds(cred_type='production')
     client = Client(sid, token)
     print('good to go')
-
+    message = client.messages.create(
+            to="+15194983069", 
+            from_=config_file.phone_number,
+            body="Hello from Python!")
