@@ -11,7 +11,7 @@ import yaml
 from twilio.rest import Client
 
 from db_model import Database
- 
+from db_model import database_manager 
 
 class configuration:
     def __init__(self, config_file):
@@ -88,59 +88,6 @@ class twilio_client:
                                               body=sms_string)
         if l_echo: print(f'to:{to_num} from:{from_num} body:{sms_string}')
 
-class database_manager:
-    def __init__(self, data_bases):
-        self.db_path_dict = data_bases # dict of {db_name: path_string}
-        self.db_struct = {}
-
-    def initialize_connections(self):
-        for db_name in self.db_path_dict.keys():
-            path_string = self.db_path_dict.get(db_name, None)
-            self.db_struct[db_name] = Database(path_string)
-            self.db_struct[db_name].connect()
-
-    def close_all(self):
-        '''
-        iterates through the databases being managed and closes them
-        '''
-        for db_name in self.db_struct.keys():
-            self.db_struct[db_name].close()
-
-    def insert_to(self, db_name, d_struct):
-        '''
-        insert data structre d_struct to database db_name
-        param d_struct is a dictionary as per doc string described
-        on insert method of the database class
-
-        '''
-        self.db_struct[db_name].insert(d_struct)
-
-    def return_app_num(self, database, file_id):
-        ls = 'SELECT app_num FROM gift_table WHERE file_id=?'
-        return self.db_struct[database].lookup_string(ls, file_id)
-
-    def return_route_num(self, database, file_id):
-        ls = 'SELECT route_num FROM route_table WHERE file_id=?'
-        return self.db_struct[database].lookup_string(ls, (file_id,))
-
-    def return_file_ids(self, database):
-        '''
-        returns tuples of (file_id, f_name, l_name, phone_num)
-        from the person_table of the client_database
-        
-        '''
-        ls = 'SELECT file_id, f_name, l_name FROM person_table'
-        return self.db_struct[database].lookup_string(ls, None)
-    
-    def return_app_date(self, database, app_num, echo=False):
-        '''
-        returns the day and time as a tuple from the database when
-        supplied a app_num
-        '''
-        ls = 'SELECT day, time from Appointments where ID=?'
-        day_time =  self.db_struct[database].lookup_string(ls, (app_num,))
-        if echo: print(f'found {day_time}')
-        return day_time
         
 def ld_client(echo=False):
     '''
