@@ -1,0 +1,8 @@
+sid: <insert your secret sid from twilio here>
+token: <insert your secret token from twilio here>
+test_sid: <twilio provides a test sid as well>
+test_token: <twilio provides a test token as well>
+phone_number: <this is the phone number you bought from twilio - make sure it is sms enabled and in the format '+15555555555'>
+test_number: <twilio provides a test number>
+test_target: <put a number here for live tests - probably your own - to kick the tires>
+daily_delivery_target: X # should be an integer of the average number of HH we can deliver to
