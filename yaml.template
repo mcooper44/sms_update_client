@@ -1,8 +1,70 @@
-sid: <insert your secret sid from twilio here>
-token: <insert your secret token from twilio here>
-test_sid: <twilio provides a test sid as well>
-test_token: <twilio provides a test token as well>
-phone_number: <this is the phone number you bought from twilio - make sure it is sms enabled and in the format '+15555555555'>
-test_number: <twilio provides a test number>
-test_target: <put a number here for live tests - probably your own - to kick the tires>
-daily_delivery_target: X # should be an integer of the average number of HH we can deliver to
+# for reference go to
+# https://en.wikipedia.org/wiki/YAML
+# RENAME THIS FILE setup.yml for use in the pipeline
+
+# creds issued by twilio
+sid: 'insert sid here'
+token: 'insert token here'
+
+test_sid: 'insert test creds here'
+test_token: 'insert test token here'
+
+# phone numbers!
+phone_number: '+1xxxxxxxxxx' # the sms enabled number purchased from twilio
+test_number: '+1xxxxxxxxxx'  # test number provided by twilio
+test_target: '+1xxxxxxxxxx'  # live test number for doing basic tests to make sure things work
+
+# the number of routes we average in a day
+# this number will be used to determine how many
+# households we should send an sms update to based 
+# on the provided paramater in the python script
+daily_delivery_target: 70 
+
+delivery_dates: 
+    - 12 # Thursday December 12
+    - 13 # Friday December 13
+    - 14 # Saturday December 14
+    - 16 # Monday December 16
+    - 17 # Tuesday December 17
+    - 18 # Wednesday December 18
+    - 19 # Thursday December 19
+    - 20 # Friday December 20 - ideally we are finished on the 18th
+
+# the ranges of appointment numbers that correspond to specific days
+# in December.  Update this after updating the script that writes
+# the gift schedule and creates the sign up sheets etc. 
+gift_dates:
+    4:
+        - 1
+        - 286
+    5:
+        - 287
+        - 572
+    6:
+        - 573
+        - 858
+    9: 
+        - 859
+        - 1144
+    10:
+        - 1145
+        - 1430
+    11:
+        - 1431
+        - 1716
+    12:
+        - 1717
+        - 2002
+    13: 
+        - 2003
+        - 2288
+    16:
+        - 2289
+        - 2574
+    17:
+        - 2575
+        - 2860
+    18:
+        - 2861
+        - 3146
+
